@@ -260,7 +260,30 @@ class GestorUsuarios
             return 'Error al actualizar la base de datos.';
         }
     }
+    public function cambiarContrasena($correo, $currentPassword, $newPassword)
+    {
+        // Obtener la contraseña actual del usuario
+        $conn=ConexionBD::obtenerConexion();
+        $stmt = $this->conn->prepare("SELECT contrasena FROM usuarios_registrados WHERE correo_electronico = ?");
+        $stmt->bind_param("s", $correo);
+        $stmt->execute();
+        $stmt->bind_result($hash_contrasena);
+        $stmt->fetch();
+        $stmt->close();
 
+        // Verificar la contraseña actual
+        if (password_verify($currentPassword, $hash_contrasena)) {
+            // Actualizar la contraseña con la nueva
+            $newHashPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+            $stmt = $this->conn->prepare("UPDATE usuarios_registrados SET contrasena = ? WHERE correo_electronico = ?");
+            $stmt->bind_param("ss", $newHashPassword, $correo);
+            $stmt->execute();
+            $stmt->close();
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 }
 
