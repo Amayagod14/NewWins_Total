@@ -76,35 +76,20 @@ class GestorUsuarios
 
     public function registrarUsuario($nombre, $apellido, $nombreUsuario, $correo, $contrasena, $pais)
     {
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            // Verificar si se recibieron los campos obligatorios
-            if (isset($_POST["nombre"]) && isset($_POST["apellido"]) && isset($_POST["nombre_user"]) && isset($_POST["correo"]) && isset($_POST["contrasena"]) && isset($_POST["pais"])) {
-                // Asignar valores a las variables
-                $nombreUsuario = $_POST["nombre_user"];
-                $nombre = $_POST["nombre"];
-                $apellido = $_POST["apellido"];
-                $correo = $_POST["correo"];
-                $contrasena = $_POST["contrasena"];
-                $contrasenaEncriptada = password_hash($contrasena, PASSWORD_DEFAULT);
-                $pais = $_POST["pais"];
+        $contrasenaEncriptada = password_hash($contrasena, PASSWORD_DEFAULT);
 
-                // Consulta para insertar el nuevo usuario
-                $sql = "INSERT INTO usuarios_registrados (nombre_usuario, contrasena, correo_electronico, nombre, ubicacion, apellido) VALUES (?, ?, ?, ?, ?, ?)";
-                $stmt = $this->conn->prepare($sql);
-                $stmt->bind_param("ssssss", $nombreUsuario, $contrasenaEncriptada, $correo, $nombre, $pais, $apellido);
+        // Consulta para insertar el nuevo usuario
+        $sql = "INSERT INTO usuarios_registrados (nombre_usuario, contrasena, correo_electronico, nombre, ubicacion, apellido) VALUES (?, ?, ?, ?, ?, ?)";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("ssssss", $nombreUsuario, $contrasenaEncriptada, $correo, $nombre, $pais, $apellido);
 
-                if ($stmt->execute()) {
-                    header("Location: ../view/index.php");
-                    exit();
-                } else {
-                    header("Location: ../view/register.php");
-                    exit();
-                }
-
+        if ($stmt->execute()) {
+            $stmt->close();
+            return true;
+        } else {
+            $stmt->close();
+            return false;
                 $stmt->close();
-            } else {
-                echo "Todos los campos son obligatorios.";
-            }
         }
     }
     public function validarUsuario($nombre_usuario, $password)

@@ -1,7 +1,7 @@
 <?php
-require_once('../model/conexion.php');
+
 function aa(){
-    $conexion = conexionBD::obtenerConexion();
+    $conexion = mysqli_connect("127.0.0.1","root","root", "NewWins");
     $salida = "";
     $sql = "SELECT * FROM categorias";
     $result = $conexion->query($sql);
@@ -11,4 +11,4 @@ function aa(){
 
     return $salida; 
 
-} 
+}   

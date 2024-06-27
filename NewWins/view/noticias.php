@@ -27,7 +27,7 @@ $usuarios = $gestorUsuarios->listarUsuarios();
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Nombre de Usuario</th>
+                                    <th>Nombre de Usuario <i class='bx bxs-user'></i></th>
                                     <th>Correo Electrónico</th>
                                 </tr>
                             </thead>

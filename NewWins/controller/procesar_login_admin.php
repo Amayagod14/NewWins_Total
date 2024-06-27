@@ -1,34 +1,42 @@
 <?php
-if (!isset($_SESSION)) session_start();
-if (!isset($_SESSION['correo'])) $_SESSION['correo'] = '';
+session_start();
 
 include '../model/gestor_usuarios.php';
-$conexion = ConexionBD::obtenerConexion();
-$gestorUsuarios = new GestorUsuarios($conexion);
 
+// Verificar si la solicitud es POST
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Verificar si se enviaron los campos requeridos
     if (isset($_POST["emailadmin"]) && isset($_POST["passwordadmin"])) {
+        // Obtener los datos del formulario
         $correo = $_POST["emailadmin"];
         $contrasena = $_POST["passwordadmin"];
+
+        // Obtener conexión y crear instancia de GestorUsuarios
+        $conexion = ConexionBD::obtenerConexion();
+        $gestorUsuarios = new GestorUsuarios($conexion);
+
+        // Intentar iniciar sesión
         $exito = $gestorUsuarios->iniciarSesionAdmin($correo, $contrasena);
 
         if ($exito) {
-            // Inicio de sesión exitoso, redireccionar a una página de administrador
-            $_SESSION['correo'] = $correo; // Guardar el correo en sesión
-            header("Location: ../view/admin_dashboard.php");
+            // Inicio de sesión exitoso, guardar el correo en sesión
+            $_SESSION['correo'] = $correo;
+            // Enviar respuesta JSON de éxito
+            echo json_encode(array('success' => true));
             exit();
         } else {
-            // Inicio de sesión fallido, redireccionar con mensaje de error
-            header("Location: ../view/admin.php?error=credenciales");
+            // Inicio de sesión fallido, enviar respuesta JSON con mensaje de error
+            echo json_encode(array('success' => false, 'message' => 'Credenciales incorrectas. Por favor, verifica tu correo y contraseña.'));
             exit();
         }
     } else {
-        // Redirigir con un mensaje de error si no se proporcionaron las credenciales
-        header("Location: ../view/admin.php?error=credenciales");
+        // No se proporcionaron los campos requeridos, enviar respuesta JSON con mensaje de error
+        echo json_encode(array('success' => false, 'message' => 'No se recibieron todos los campos requeridos.'));
         exit();
     }
 } else {
-    // Redirigir si no es una solicitud POST (esto debería manejarse en el formulario)
+    // Si no es una solicitud POST, redirigir a la página de inicio de admin
     header("Location: ../view/admin.php");
     exit();
 }
+?>

@@ -14,7 +14,7 @@
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>
-                    <th>Autor</th>
+                    <th>Autor <i class='bx bxs-user'></i></th>
                     <th>Fecha</th>
                     <th>Imagen</th>
                     <th>Título</th>

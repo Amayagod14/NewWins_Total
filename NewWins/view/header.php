@@ -11,6 +11,7 @@ if (!isset($_SESSION['correo'])) {
 <html lang="en">
 
 <head>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <link rel="icon" href="../img/logo.png" type="image/png" >
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q99HS3X12S"></script>
     <script>
@@ -25,7 +26,8 @@ if (!isset($_SESSION['correo'])) {
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   
+    
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
     <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="../css/styles.css"> <!-- Vincula tu archivo CSS externo -->
@@ -45,7 +47,7 @@ if (!isset($_SESSION['correo'])) {
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="gestionar_categorias.php">Gestionar Categorias</a>
+                        <a class="nav-link" href="gestionar_categorias.php">Gestionar Categorias <i class='bx bxs-category-alt'></i></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="gestionar_articulos.php">Gestionar Artículos <i class='bx bx-list-ul' ></i></a>

@@ -1,10 +1,9 @@
 <?php
+include('../model/gestor_usuarios.php'); // Incluir la clase GestorUsuarios
 
-include('../model/gestor_usuarios.php'); // Incluye la clase GestorUsuarios
-
-// Verifica si se recibieron los datos del formulario
+// Verificar si se recibieron los datos del formulario
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Obtén los datos del formulario
+    // Obtener los datos del formulario
     $nombre = $_POST["nombre"];
     $apellido = $_POST["apellido"];
     $nombreUsuario = $_POST["nombre_user"];
@@ -12,9 +11,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $contrasena = $_POST["contrasena"];
     $pais = $_POST["pais"];
 
-    // Instancia la clase GestorUsuarios
+    // Instanciar la clase GestorUsuarios
     $gestorUsuarios = new GestorUsuarios();
 
-    // Llama al método registrarUsuario con los datos del formulario
-    $gestorUsuarios->registrarUsuario($nombre, $apellido, $nombreUsuario, $correo, $contrasena, $pais);
+    // Intentar registrar al usuario
+    $registroExitoso = $gestorUsuarios->registrarUsuario($nombre, $apellido, $nombreUsuario, $correo, $contrasena, $pais);
+
+    if ($registroExitoso) {
+        // Registro exitoso
+        $response = [
+            'status' => 'success',
+            'message' => 'Se ha registrado correctamente.'
+        ];
+    } else {
+        // Error en el registro
+        $response = [
+            'status' => 'error',
+            'message' => 'Hubo un error en el registro. Por favor, inténtalo de nuevo.'
+        ];
+    }
+
+    // Devolver respuesta como JSON
+    header('Content-Type: application/json');
+    echo json_encode($response);
 }
+?>

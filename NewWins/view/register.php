@@ -16,7 +16,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Usuario</title>
     <link rel="stylesheet" href="https://unpkg.com/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+    <script src="https://unpkg.com/sweetalert2@11/dist/sweetalert2.min.js"></script>
+    <script src="../js/alert.js"></script>
 </head>
 
 <body>
@@ -40,42 +41,45 @@
                     <div class="col-lg-6 mb-5 mb-lg-0">
                         <div class="card">
                             <div class="card-body py-5 px-md-5">
-                                <!-- Aquí se llama a la función registrarUsuario() en el atributo action -->
-                                <form action="../controller/procesar_registro.php" method="POST">
-                                    <!-- 2 column grid layout with text inputs for the first and last names -->
+                                <!-- Formulario de registro -->
+                                <form id="registroForm" action="../controller/procesar_registro.php" method="POST">
+                                    <!-- Campos del formulario -->
                                     <div class="row">
                                         <div class="col-md-4 mb-4">
-                                            <div data-mdb-input-init class="form-outline">
-                                                <input type="text" name="nombre" id="form3Example1" class="form-control" />
-                                                <label class="form-label" for="form3Example1">Nombre</label>
+                                            <div class="form-outline">
+                                                <input type="text" name="nombre" id="nombre" class="form-control" required />
+                                                <label class="form-label" for="nombre">Nombre</label>
                                             </div>
                                         </div>
                                         <div class="col-md-4 mb-4">
-                                            <div data-mdb-input-init class="form-outline">
-                                                <input type="text" name="apellido" id="form3Example2" class="form-control" />
-                                                <label class="form-label" for="form3Example2">Apellido</label>
+                                            <div class="form-outline">
+                                                <input type="text" name="apellido" id="apellido" class="form-control" required />
+                                                <label class="form-label" for="apellido">Apellido</label>
                                             </div>
                                         </div>
                                         <div class="col-md-4 mb-4">
-                                            <div data-mdb-input-init class="form-outline">
-                                                <input type="text" name="nombre_user" id="form3Example3" class="form-control" />
-                                                <label class="form-label" for="form3Example3">Nombre de Usuario</label>
+                                            <div class="form-outline">
+                                                <input type="text" name="nombre_user" id="nombre_user" class="form-control" required />
+                                                <label class="form-label" for="nombre_user">Nombre de Usuario</label>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <!-- Email input -->
-                                    <div data-mdb-input-init class="form-outline mb-4">
-                                        <input type="email" name="correo" id="form3Example4" class="form-control" />
-                                        <label class="form-label" for="form3Example4">Correo</label>
+                                    <div class="mb-4">
+                                        <div class="form-outline">
+                                            <input type="email" name="correo" id="correo" class="form-control" required />
+                                            <label class="form-label" for="correo">Correo</label>
+                                        </div>
                                     </div>
 
-                                    <!-- Password input -->
-                                    <div data-mdb-input-init class="form-outline mb-4">
-                                        <input type="password" name="contrasena" id="form3Example5" class="form-control" />
-                                        <label class="form-label" for="form3Example5">Contraseña</label>
+                                    <div class="mb-4">
+                                        <div class="form-outline">
+                                            <input type="password" name="contrasena" id="contrasena" class="form-control" required />
+                                            <label class="form-label" for="contrasena">Contraseña</label>
+                                        </div>
                                     </div>
-                                    <div class="mb-3">
+
+                                    <div class="mb-4">
                                         <label for="pais" class="form-label">País</label>
                                         <select class="form-select" id="pais" name="pais" required>
                                             <option value="" selected disabled>Selecciona tu país</option>
@@ -103,20 +107,56 @@
                                         </select>
                                     </div>
 
-                                    <!-- Submit button -->
-                                    <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block mb-4">
-                                        Registrar
-                                    </button>
+                                    <!-- Botón de registro -->
+                                    <button type="submit" class="btn btn-primary btn-block mb-4">Registrar</button>
 
-                                    <div class="col-12">
-                                        <p class="m-0 text-secondary text-center">¿Ya tienes una cuenta? <a href="index.php" class="link-primary text-decoration-none">Iniciar sesión</a></p>
-                                    </div>
+                                    <!-- Mensaje de redirección -->
+                                    <div id="mensaje" class="text-secondary text-center"></div>
                                 </form>
+
+                                <div class="col-12">
+                                    <p class="m-0 text-secondary text-center">¿Ya tienes una cuenta? <a href="index.php" class="link-primary text-decoration-none">Iniciar sesión</a></p>
+                                </div>
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-                    <!-- Section: Design Block -->
+    <!-- Script para manejar la respuesta del registro -->
+    <script src="https://unpkg.com/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+    <script src="../js/alert.js"></script>
+    <script>
+        // Capturar el evento submit del formulario
+        document.getElementById('registroForm').addEventListener('submit', function (event) {
+            event.preventDefault(); // Evitar el envío automático del formulario
+
+            // Enviar los datos del formulario mediante fetch
+            fetch('../controller/procesar_registro.php', {
+                method: 'POST',
+                body: new FormData(this) // Enviar datos del formulario
+            })
+            .then(response => response.json()) // Convertir respuesta a JSON
+            .then(data => {
+                if (data.status === 'success') {
+                    // Mostrar alerta de éxito
+                    showSuccessAlert(data.message);
+                    // Redirigir después de 3 segundos
+                    setTimeout(() => { window.location.href = '../view/index.php'; }, 3000);
+                } else {
+                    // Mostrar alerta de error
+                    showErrorAlert(data.message);
+                    // Limpiar el mensaje después de 3 segundos
+                    setTimeout(() => { document.getElementById('mensaje').innerHTML = ''; }, 3000);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
 </body>
 
 </html>
