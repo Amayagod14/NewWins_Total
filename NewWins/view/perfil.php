@@ -12,6 +12,12 @@ $userEmail = $_SESSION['correo'];
 include 'header.php';
 $user = GestorUsuarios::getUserByEmail($userEmail);
 ?>
+<?php
+// Mostrar mensaje de éxito si la contraseña se cambió correctamente
+if (isset($_GET['success']) && $_GET['success'] == 'cambio_contrasena') {
+    echo "<p class='alert alert-success'>Contraseña cambiada exitosamente.</p>";
+}
+?>
 
 <html lang="es">
 
@@ -24,8 +30,7 @@ $user = GestorUsuarios::getUserByEmail($userEmail);
     <div class="container-xl px-4 mt-4">
 
         <nav class="nav nav-borders">
-            <a class="nav-link active ms-0" href="#">Perfil</a>
-            <a class="nav-link" href="#">Facturación</a>
+            <a class="nav-link active ms-0" href="perfil.php">Perfil</a>
             <a class="nav-link" href="change_pass.php">Seguridad</a>
         </nav>
         <hr class="mt-0 mb-4">
