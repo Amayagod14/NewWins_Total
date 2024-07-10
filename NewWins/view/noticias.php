@@ -13,6 +13,7 @@ require_once '../model/gestor_usuarios.php';
 $gestorUsuarios = new GestorUsuarios();
 $usuarios = $gestorUsuarios->listarUsuarios();
 ?>
+
 <head>
     <title>Gestion de usuarios</title>
 </head>
@@ -26,9 +27,9 @@ $usuarios = $gestorUsuarios->listarUsuarios();
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Nombre de Usuario <i class='bx bxs-user'></i></th>
-                                    <th>Correo Electrónico</th>
+                                    <th>ID <br><i class='bx bx-hash'></i></th>
+                                    <th>Nombre de Usuario <br> <i class='bx bxs-user'></i></th>
+                                    <th>Correo Electrónico <br><i class='bx bxs-chat'></i></th>
                                 </tr>
                             </thead>
                             <tbody>

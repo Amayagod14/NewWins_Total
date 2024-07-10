@@ -1,7 +1,9 @@
 <?php include 'header.php'; ?>
+
 <head>
     <title>Bandeja de mensajes</title>
 </head>
+
 <body>
     <div class="container my-5">
         <h1 class="mb-4">Bandeja de Entrada</h1>
@@ -14,11 +16,11 @@
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>
-                    <th>Autor <i class='bx bxs-user'></i></th>
-                    <th>Fecha</th>
-                    <th>Imagen</th>
-                    <th>Título</th>
-                    <th>Contenido</th>
+                    <th>Autor <br><i class='bx bxs-user'></i></th>
+                    <th>Fecha <br><i class='bx bx-calendar'></i></th>
+                    <th>Imagen <br><i class='bx bx-images'></i></th>
+                    <th>Título <br><i class='bx bx-list-ul'></i></th>
+                    <th>Contenido <br><i class='bx bxs-book-content'></i></th>
                 </tr>
             </thead>
             <tbody>

@@ -44,7 +44,7 @@ if (isset($_GET['success']) && $_GET['success'] == 'cambio_contrasena') {
                     <form action="../controller/upload_profile.php" method="POST" enctype="multipart/form-data">
                         <label for="foto_perfil" class="btn btn-primary">
                             <i class='bx bx-upload'></i> Seleccionar archivo
-                        </label>
+                        </label><br><br>
                         <input type="file" id="foto_perfil" name="foto_perfil" accept="image/*" required style="display:none;">
                         <button class="btn btn-primary" type="submit">Subir Nueva imagen</button>
                     </form>

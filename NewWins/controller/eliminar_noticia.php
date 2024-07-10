@@ -8,5 +8,9 @@ $gestor = new GestorContenido($conexion);
 
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
-    $gestor->eliminarNoticia($id);
+    if ($gestor->eliminarNoticia($id)) {
+        echo json_encode(array("success" => true));
+    } else {
+        echo json_encode(array("success" => false));
+    }
 }

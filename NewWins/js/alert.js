@@ -11,6 +11,21 @@ const Toast = Swal.mixin({
         toast.onmouseleave = Swal.resumeTimer;
     }
 });
+// Función para mostrar alerta de éxito al eliminar noticia
+function mostrarAlertaExitoEliminarNoticia(message) {
+    Toast.fire({
+        icon: 'success',
+        title: message
+    });
+}
+
+// Función para mostrar alerta de error al eliminar noticia
+function mostrarAlertaErrorEliminarNoticia(message) {
+    Toast.fire({
+        icon: 'error',
+        title: message
+    });
+}
 
 // Función para mostrar alerta de éxito
 function showSuccessAlert(message) {

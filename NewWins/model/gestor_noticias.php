@@ -19,15 +19,12 @@ class GestorContenido
             $stmt->bind_param("ssssi", $titulo, $fecha_publicacion, $contenido, $url, $categoria_id);
 
             if ($stmt->execute()) {
-                header("Location: ../view/admin_dashboard.php?success=noticia_subida");
-                exit();
+                return true; // Devolver true si la inserción fue exitosa
             } else {
-                header("Location: ../view/admin_dashboard.php?error=subir_noticia");
-                exit();
+                return false; // Devolver false si hubo un error en la inserción
             }
         } else {
-            header("Location: ../view/admin_dashboard.php?error=falta_datos");
-            exit();
+            return false; // Devolver false si faltan datos
         }
     }
 
@@ -47,7 +44,6 @@ class GestorContenido
         return $result;
     }
 
-
     public function eliminarNoticia($id)
     {
         $sql = "DELETE FROM articulos WHERE id = ?";
@@ -55,11 +51,9 @@ class GestorContenido
         $stmt->bind_param("i", $id);
 
         if ($stmt->execute()) {
-            header("Location: ../view/admin_dashboard.php?success=noticia_eliminada");
-            exit();
+            return true;
         } else {
-            header("Location: ../view/admin_dashboard.php?error=eliminar_noticia");
-            exit();
+            return false;
         }
     }
 
@@ -70,10 +64,9 @@ class GestorContenido
         $stmt->bind_param("i", $id);
 
         if ($stmt->execute()) {
-            header("Location: ../view/gestionar_categorias.php?success=categoria_eliminada");
-            exit();
+            return true;
         } else {
-            echo "Error: " . $stmt->error;
+            return false;
         }
     }
 
@@ -84,14 +77,15 @@ class GestorContenido
             $stmt->bind_param("sss", $nombre, $descripcion, $imagen);
 
             if ($stmt->execute()) {
-                header("Location: ../view/admin_dashboard.php?success=categoria_creada");
+                return true; // Devolver true si la inserción fue exitosa
             } else {
-                echo "Error: " . $stmt->error;
+                return false; // Devolver false si hubo un error en la inserción
             }
         } else {
-            echo "Por favor, complete todos los campos.";
+            return false; // Devolver false si faltan datos
         }
     }
+
     public function editarNoticia($id, $titulo, $contenido, $url, $categoria_id)
     {
         $sql = "UPDATE articulos SET titulo = ?, contenido = ?, url = ?, categoria_id = ? WHERE id = ?";
@@ -99,12 +93,9 @@ class GestorContenido
         $stmt->bind_param("sssii", $titulo, $contenido, $url, $categoria_id, $id);
 
         if ($stmt->execute()) {
-            header("Location: ../view/gestionar_articulos.php?success=noticia_editada");
-            exit();
+            return true;
         } else {
-            header("Location: ../view/gestionar_articulos.php?error=editar_noticia");
-            exit();
+            return false;
         }
     }
-
 }
