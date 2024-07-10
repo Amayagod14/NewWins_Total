@@ -92,4 +92,19 @@ class GestorContenido
             echo "Por favor, complete todos los campos.";
         }
     }
+    public function editarNoticia($id, $titulo, $contenido, $url, $categoria_id)
+    {
+        $sql = "UPDATE articulos SET titulo = ?, contenido = ?, url = ?, categoria_id = ? WHERE id = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("sssii", $titulo, $contenido, $url, $categoria_id, $id);
+
+        if ($stmt->execute()) {
+            header("Location: ../view/gestionar_articulos.php?success=noticia_editada");
+            exit();
+        } else {
+            header("Location: ../view/gestionar_articulos.php?error=editar_noticia");
+            exit();
+        }
+    }
+
 }
