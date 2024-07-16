@@ -8,5 +8,11 @@ $gestor = new GestorContenido($conexion);
 
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
-    $gestor->eliminarCategoria($id);
+    if ($gestor->eliminarCategoria($id)) {
+        header("Location: ../view/gestionar_categorias.php?status=success");
+    } else {
+        header("Location: ../view/gestionar_categorias.php?status=error");
+    }
+    exit();
 }
+?>

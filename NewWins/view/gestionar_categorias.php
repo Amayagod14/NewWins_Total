@@ -2,19 +2,28 @@
 if (!isset($_SESSION)) session_start();
 if (!isset($_SESSION['correo'])) {
     header("Location: admin.php");
+    exit();
 } else if (isset($_SESSION['correo']) == "") {
     header("Location: admin.php");
+    exit();
 }
 
 include 'header.php';
 ?>
+<!DOCTYPE html>
+<html lang="es">
 <head>
-    <title>Gestion de categorias</title>
+    <meta charset="UTF-8">
+    <title>Gestión de categorías</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../js/alert.js"></script>
 </head>
+<body>
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-12">
             <div class="mt-4">
+                <h4>Categorías Generales</h4>
                 <?php
                 include '../model/conexion.php';
                 include '../model/gestor_noticias.php';
@@ -22,14 +31,10 @@ include 'header.php';
                 $conexion = ConexionBD::obtenerConexion();
                 $gestor = new GestorContenido($conexion);
 
-                // Obtener las categorías
                 $categorias = $gestor->listarCategorias();
 
-                // Verificar si hay categorías disponibles
                 if ($categorias) {
-                    // Verificar si hay al menos una categoría
                     if (!empty($categorias)) {
-                         // Contenedor con scroll vertical
                         echo '<div class="table-responsive">';
                         echo '<table class="table table-bordered table-striped">';
                         echo '<thead class="table-dark">';
@@ -63,13 +68,23 @@ include 'header.php';
                     echo '<p class="text-danger">Ocurrió un error al obtener las categorías.</p>';
                 }
 
-                // Cerrar la conexión a la base de datos
                 $conexion->close();
                 ?>
             </div>
         </div>
     </div>
 </div>
-</body>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        const status = urlParams.get('status');
+        if (status === 'success') {
+            mostrarAlertaExito('Categoría eliminada correctamente.');
+        } else if (status === 'error') {
+            mostrarAlertaError('Error al eliminar la categoría.');
+        }
+    });
+</script>
+</body>
 </html>

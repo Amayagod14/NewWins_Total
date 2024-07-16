@@ -10,15 +10,15 @@ if (!isset($_SESSION['correo'])) {
 }
 include 'header.php';
 ?>
-
 <head>
     <title>Gestión de Artículos</title>
 </head>
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-9">
+        <div class="col-md-12">
+            
             <div id="noticias" class="mt-4">
-                <h4>Noticias</h4>
+                <h4>Articulos Generales</h4>
                 <div class="mt-4">
                     <?php
                     include '../model/conexion.php';
@@ -159,4 +159,13 @@ include 'header.php';
                         }
                     });
                 }
+                document.addEventListener('DOMContentLoaded', function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        const status = urlParams.get('status');
+        if (status === 'success') {
+            mostrarAlertaExito('Noticia editada correctamente.');
+        } else if (status === 'error') {
+            mostrarAlertaError('Error al editar la noticia.');
+        }
+    });
             </script>

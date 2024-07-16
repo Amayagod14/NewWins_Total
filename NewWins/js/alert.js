@@ -1,4 +1,4 @@
-// js/alert.js
+// alert.js
 
 const Toast = Swal.mixin({
     toast: true,
@@ -11,6 +11,7 @@ const Toast = Swal.mixin({
         toast.onmouseleave = Swal.resumeTimer;
     }
 });
+
 // Función para mostrar alerta de éxito al eliminar noticia
 function mostrarAlertaExitoEliminarNoticia(message) {
     Toast.fire({
@@ -28,28 +29,15 @@ function mostrarAlertaErrorEliminarNoticia(message) {
 }
 
 // Función para mostrar alerta de éxito
-function showSuccessAlert(message) {
+function mostrarAlertaExito(mensaje) {
     Swal.fire({
         icon: 'success',
-        title: '¡Éxito!',
-        text: message,
-        showConfirmButton: false,
-        timer: 2000 // Cerrar automáticamente después de 2 segundos
+        title: 'Éxito',
+        text: mensaje
     });
 }
 
 // Función para mostrar alerta de error
-function showErrorAlert(message) {
-    Swal.fire({
-        icon: 'error',
-        title: '¡Error!',
-        text: message,
-        confirmButtonColor: '#dc3545' // Color del botón de confirmación
-    });
-}
-
-// alert.js
-
 function mostrarAlertaError(mensaje) {
     Swal.fire({
         icon: 'error',
@@ -58,10 +46,22 @@ function mostrarAlertaError(mensaje) {
     });
 }
 
-function mostrarAlertaExito(mensaje) {
-    Swal.fire({
-        icon: 'success',
-        title: 'Éxito',
-        text: mensaje
-    });
+// Función para previsualizar imagen seleccionada
+function previewImage(input) {
+    var preview = document.getElementById('preview');
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            preview.src = e.target.result;
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+// Función para cancelar selección de archivo
+function cancelUpload() {
+    var input = document.getElementById('foto_perfil');
+    input.value = null; // Clear the file input
+    var preview = document.getElementById('preview');
+    preview.src = 'http://bootdey.com/img/Content/avatar/avatar1.png'; // Reset preview image
 }

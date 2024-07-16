@@ -13,13 +13,12 @@ require_once '../model/gestor_usuarios.php';
 $gestorUsuarios = new GestorUsuarios();
 $usuarios = $gestorUsuarios->listarUsuarios();
 ?>
-
 <head>
     <title>Gestion de usuarios</title>
 </head>
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-9">
+        <div class="col-md-12">
             <div id="usuarios" class="mt-4">
                 <h4>Usuarios Registrados</h4>
                 <div class="table-responsive mt-4">

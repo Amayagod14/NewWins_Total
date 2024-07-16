@@ -18,5 +18,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $url = $_POST['url'];
     $categoria_id = $_POST['categoria_id'];
 
-    $gestorContenido->editarNoticia($id, $titulo, $contenido, $url, $categoria_id);
+    if ($gestorContenido->editarNoticia($id, $titulo, $contenido, $url, $categoria_id)) {
+        header("Location: ../view/gestionar_articulos.php?status=success");
+    } else {
+        header("Location: ../view/edit_news.php?status=error");
+    }
+    exit();
 }
+?>

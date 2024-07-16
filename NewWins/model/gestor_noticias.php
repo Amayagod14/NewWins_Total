@@ -57,17 +57,13 @@ class GestorContenido
         }
     }
 
-    public function eliminarCategoria($id)
+public function eliminarCategoria($id)
     {
         $sql = "DELETE FROM categorias WHERE id = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("i", $id);
 
-        if ($stmt->execute()) {
-            return true;
-        } else {
-            return false;
-        }
+        return $stmt->execute();
     }
 
     public function crearCategoria($nombre, $descripcion, $imagen)

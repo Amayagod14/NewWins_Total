@@ -20,3 +20,4 @@ if ($result === true) {
     header("Location: ../view/perfil.php?mensaje=" . urlencode($result));
 }
 exit();
+?>

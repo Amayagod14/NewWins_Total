@@ -6,7 +6,7 @@
 
 <body>
     <div class="container my-5">
-        <h1 class="mb-4">Bandeja de Entrada</h1>
+        <h4 class="mb-4">Bandeja de Entrada</h4>
 
         <?php
         // Incluir el controlador para obtener los artículos

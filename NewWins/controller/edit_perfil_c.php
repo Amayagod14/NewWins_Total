@@ -26,6 +26,7 @@ if ($currentEmail != $email) {
     $_SESSION['correo'] = $email;
 }
 
-// Redirigir a la página de perfil
-header("Location: ../view/perfil.php");
+// Redirigir a la página de perfil con un mensaje de éxito
+header("Location: ../view/perfil.php?mensaje=exito_cambio");
 exit;
+?>
