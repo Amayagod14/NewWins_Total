@@ -1,5 +1,5 @@
 <?php
-require_once ('gestor_noticias.php');
+require_once('gestor_noticias.php');
 
 class VistaNoticias
 {
@@ -11,14 +11,15 @@ class VistaNoticias
     }
 
     // Mostrar todas las noticias
-    public function mostrarNoticias() {
+    public function mostrarNoticias()
+    {
         $noticias = $this->gestorContenido->listarNoticias();
         foreach ($noticias as $noticia) {
             $id = $noticia['id']; // Ajusta el índice según tu base de datos
             $titulo = $noticia['titulo'];
             $fecha_not = $noticia['fecha_publicacion'];
             $imagen = $noticia['url']; // Ajusta el índice según tu base de datos
-            
+
             echo '<div class="col-md-4 mb-4">';
             echo '  <a href="ver_noticia.php?id=' . $id . '">';
             echo '      <div class="card">';
@@ -58,7 +59,7 @@ class VistaNoticias
         echo "</div>";
         echo "</div>";
     }
-    
+
 
     public function mostrarNoticiasConPaginacion($pagina = 1, $noticiasPorPagina = 10)
     {
@@ -87,6 +88,24 @@ class VistaNoticias
         } catch (Exception $e) {
             echo "<p>Error al obtener la noticia: " . $e->getMessage() . "</p>";
         }
+    }
+    public function mostrarArticulo($articulo)
+    {
+        $id = htmlspecialchars($articulo['id']);
+        $titulo = htmlspecialchars($articulo['titulo']);
+        $url = htmlspecialchars($articulo['url']);
+        $fecha = htmlspecialchars($articulo['fecha_publicacion']); // Ajusta el nombre del campo según tu base de datos
+
+        echo '<div class="col-md-4 mb-4">';
+        echo '  <div class="card">';
+        echo '      <img src="' . $url . '" class="card-img-top" alt="' . $titulo . '">';
+        echo '      <div class="card-body">';
+        echo '          <h5 class="card-title">' . $titulo . '</h5>';
+        echo '          <p class="card-text">' . $fecha . '</p>'; // Mostrar la fecha del artículo
+        echo '          <a href="../view/ver_noticia.php?id=' . $id . '" class="stretched-link"></a>'; // Enlace para ver la noticia
+        echo '      </div>';
+        echo '  </div>';
+        echo '</div>';
     }
 
 }

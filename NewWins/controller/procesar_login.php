@@ -1,20 +1,29 @@
 <?php
-if (!isset($_SESSION)) session_start();
-if (!isset($_SESSION['correo'])) $_SESSION['correo'] = '';
-include('../model/gestor_usuarios.php'); // Incluye la clase GestorUsuarios
+session_start();
+require_once '../model/conexion.php';
+require_once '../model/gestor_usuarios.php';
 
-// Verifica si se recibieron los datos del formulario
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Obtén los datos del formulario
-    $correo = $_POST["email"];
-    $contrasena = $_POST["password"];
-    
-    // Instancia la clase GestorUsuarios
-    $gestorUsuarios = new GestorUsuarios();
+    if (isset($_POST["email"]) && isset($_POST["password"])) {
+        $correo = $_POST["email"];
+        $contra = $_POST["password"];
 
-    // Llama al método iniciarSesion con los datos del formulario
-    $gestorUsuarios->iniciarSesion($correo, $contrasena);
-    $_SESSION['correo'] = $correo;
-    //header("Location: ../view/header.php");
-    exit();
+        $conexion = ConexionBD::obtenerConexion();
+        $gestorUsuarios = new GestorUsuarios($conexion);
+        $errorMensaje = $gestorUsuarios->iniciarSesion($correo, $contra);
+
+        if ($errorMensaje) {
+            // Redirigir con el mensaje de error
+            header("Location: index.php?error=" . urlencode($errorMensaje));
+            exit;
+        }
+    } else {
+        // Redirigir con el mensaje de error de campos obligatorios
+        header("Location: index.php?error=" . urlencode("Todos los campos son obligatorios."));
+        exit;
+    }
+} else {
+    // Redirigir si no es una solicitud POST
+    header("Location: index.php");
+    exit;
 }

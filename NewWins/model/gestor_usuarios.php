@@ -81,7 +81,7 @@ class GestorUsuarios
         } else {
             $stmt->close();
             return false;
-                $stmt->close();
+            $stmt->close();
         }
     }
     public function validarUsuario($nombre_usuario, $password)

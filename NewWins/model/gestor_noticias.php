@@ -59,13 +59,28 @@ class GestorContenido
 
     public function eliminarCategoria($id)
     {
-        $sql = "DELETE FROM categorias WHERE id = ?";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("i", $id);
+        // Iniciar una transacción
+        $this->conn->begin_transaction();
 
-        if ($stmt->execute()) {
+        try {
+            // Primero, eliminar todos los artículos relacionados con la categoría
+            $sql_articulos = "DELETE FROM articulos WHERE categoria_id = ?";
+            $stmt_articulos = $this->conn->prepare($sql_articulos);
+            $stmt_articulos->bind_param("i", $id);
+            $stmt_articulos->execute();
+
+            // Luego, eliminar la categoría
+            $sql_categoria = "DELETE FROM categorias WHERE id = ?";
+            $stmt_categoria = $this->conn->prepare($sql_categoria);
+            $stmt_categoria->bind_param("i", $id);
+            $stmt_categoria->execute();
+
+            // Si ambas operaciones fueron exitosas, confirmar la transacción
+            $this->conn->commit();
             return true;
-        } else {
+        } catch (Exception $e) {
+            // Si hubo un error, revertir la transacción
+            $this->conn->rollback();
             return false;
         }
     }
@@ -133,5 +148,38 @@ class GestorContenido
         $stmt->execute();
         return $stmt->get_result();
     }
+    public function buscarNoticias($termino)
+    {
+        $termino = "%" . $termino . "%"; // Añadir comodines para la búsqueda parcial
+        $sql = "SELECT * FROM articulos WHERE titulo LIKE ? OR contenido LIKE ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("ss", $termino, $termino);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $noticias = [];
+        while ($row = $result->fetch_assoc()) {
+            $noticias[] = $row;
+        }
+
+        return $noticias;
+    }
+    public function listarArticulosPorCategoria($categoria_id)
+    {
+        $sql = "SELECT * FROM articulos WHERE categoria_id = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("i", $categoria_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $articulos = [];
+        while ($row = $result->fetch_assoc()) {
+            $articulos[] = $row;
+        }
+
+        return $articulos;
+    }
+
+
 
 }

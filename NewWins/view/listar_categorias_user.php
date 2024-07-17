@@ -9,12 +9,22 @@ require_once '../model/conexion.php';
 require_once '../model/gestor_noticias.php';
 require_once '../model/vistanoticias.php';
 
+// Obtener la categoría seleccionada
+$categoria_id = isset($_GET['categoria_id']) ? intval($_GET['categoria_id']) : 0;
+
 // Configuración de la base de datos
 $conexion = ConexionBD::obtenerConexion();
 $gestorContenido = new GestorContenido($conexion);
 $vistaNoticias = new VistaNoticias($gestorContenido);
+
 // Obtener la fecha actual
 $fechaActual = date("d/m/Y"); // Formato de fecha: día/mes/año
+
+// Obtener artículos relacionados con la categoría seleccionada
+$articulos = [];
+if ($categoria_id > 0) {
+    $articulos = $gestorContenido->listarArticulosPorCategoria($categoria_id);
+}
 ?>
 
 <!DOCTYPE html>
@@ -83,7 +93,7 @@ $fechaActual = date("d/m/Y"); // Formato de fecha: día/mes/año
                     if ($categorias->num_rows > 0) {
                         echo '<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">';
                         while ($categoria = $categorias->fetch_assoc()) {
-                            echo '<li><a class="dropdown-item" href="listar_categorias_user.php?categoria_id=' . $categoria['id'] . '">' . $categoria['nombre'] . '</a></li>';
+                            echo '<li><a class="dropdown-item" href="../view/listar_categorias_user.php?categoria_id=' . $categoria['id'] . '">' . $categoria['nombre'] . '</a></li>';
                         }
                         echo '</ul>';
                     } else {
@@ -95,8 +105,6 @@ $fechaActual = date("d/m/Y"); // Formato de fecha: día/mes/año
                     <a class="nav-link" href="#">Envía tu noticia</a>
                 </li>
             </ul>
-
-
 
             <div class="col-md-8 d-flex align-items-center">
                 <div class="bg-danger text-white text-center py-2" style="width: 100px;">Tendencia</div>
@@ -119,28 +127,31 @@ $fechaActual = date("d/m/Y"); // Formato de fecha: día/mes/año
                 </div>
             </div>
         </div>
-        </div>
     </nav>
     <!-- Navbar End -->
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('cerrarSesionUser').addEventListener('click', function(e) {
-                e.preventDefault();
-                Swal.fire({
-                    title: 'Cerrando sesión',
-                    icon: 'info',
-                    showConfirmButton: false,
-                    timer: 1500 // Duración en milisegundos
-                }).then(function() {
-                    window.location.href = '../controller/logout.php';
-                });
-            });
-        });
-    </script>
+    <!-- Main Content Start -->
+    <div class="container mt-4">
+        <?php if ($categoria_id > 0 && !empty($articulos)) : ?>
+            <h2 class="mb-4">Artículos en la categoría: <?php echo htmlspecialchars($articulos[0]['categoria_nombre']); ?></h2>
+            <div class="row">
+                <?php foreach ($articulos as $articulo) : ?>
+                    <?php $vistaNoticias->mostrarArticulo($articulo); ?>
+                <?php endforeach; ?>
+            </div>
+        <?php else : ?>
+            <p>No se encontraron artículos para esta categoría.</p>
+        <?php endif; ?>
+    </div>
+    <!-- Main Content End -->
 
+    <?php include('footer_user.php'); ?>
 
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://unpkg.com/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/owlcarousel/owl.carousel.min.js"></script>
+    <script src="../js/main.js"></script>
 </body>
 
 </html>

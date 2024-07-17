@@ -130,31 +130,35 @@
     <script src="../js/alert.js"></script>
     <script>
         // Capturar el evento submit del formulario
-        document.getElementById('registroForm').addEventListener('submit', function (event) {
+        document.getElementById('registroForm').addEventListener('submit', function(event) {
             event.preventDefault(); // Evitar el envío automático del formulario
 
             // Enviar los datos del formulario mediante fetch
             fetch('../controller/procesar_registro.php', {
-                method: 'POST',
-                body: new FormData(this) // Enviar datos del formulario
-            })
-            .then(response => response.json()) // Convertir respuesta a JSON
-            .then(data => {
-                if (data.status === 'success') {
-                    // Mostrar alerta de éxito
-                    showSuccessAlert(data.message);
-                    // Redirigir después de 3 segundos
-                    setTimeout(() => { window.location.href = '../view/index.php'; }, 3000);
-                } else {
-                    // Mostrar alerta de error
-                    showErrorAlert(data.message);
-                    // Limpiar el mensaje después de 3 segundos
-                    setTimeout(() => { document.getElementById('mensaje').innerHTML = ''; }, 3000);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+                    method: 'POST',
+                    body: new FormData(this) // Enviar datos del formulario
+                })
+                .then(response => response.json()) // Convertir respuesta a JSON
+                .then(data => {
+                    if (data.status === 'success') {
+                        // Mostrar alerta de éxito
+                        showSuccessAlert(data.message);
+                        // Redirigir después de 3 segundos
+                        setTimeout(() => {
+                            window.location.href = '../view/index.php';
+                        }, 3000);
+                    } else {
+                        // Mostrar alerta de error
+                        showErrorAlert(data.message);
+                        // Limpiar el mensaje después de 3 segundos
+                        setTimeout(() => {
+                            document.getElementById('mensaje').innerHTML = '';
+                        }, 3000);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
         });
     </script>
 </body>
