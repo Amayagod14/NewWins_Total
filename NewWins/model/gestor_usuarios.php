@@ -11,47 +11,39 @@ class GestorUsuarios
         $this->conn = ConexionBD::obtenerConexion(); // Obtener la conexión
     }
 
-    public function iniciarSesion($correo, $contra)
+ public function iniciarSesion($correo, $contra)
     {
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            if (isset($_POST["email"]) && isset($_POST["password"])) {
-                // Consulta para obtener el usuario por su correo electrónico
-                $sql = "SELECT * FROM usuarios_registrados WHERE correo_electronico = ?";
-                $stmt = $this->conn->prepare($sql);
-                $stmt->bind_param("s", $correo);
-                $stmt->execute();
-                $result = $stmt->get_result();
+        // Consulta para obtener el usuario por su correo electrónico
+        $sql = "SELECT * FROM usuarios_registrados WHERE correo_electronico = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("s", $correo);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-                // Verificar si se encontró el usuario
-                if ($result->num_rows == 1) {
-                    // Obtener los datos del usuario
-                    $row = $result->fetch_assoc();
-                    // Verificar la contraseña
-                    if (password_verify($contra, $row['contrasena'])) {
-                        // Guardar información del usuario en la sesión
-                        $_SESSION['user_id'] = $row['id'];
-                        $_SESSION['user_nombre'] = $row['nombre'];
-                        $_SESSION['user_apellido'] = $row['apellido'];
-                        // Redirigir al usuario a otra página (puedes cambiar 'v.html' por la página que desees)
-                        header("Location: v.html");
-                        exit;
-                    } else {
-                        // Contraseña incorrecta
-                        header("Location: index.php?error=contrasena");
-                        exit();
-                    }
-                } else {
-                    // Usuario no encontrado
-                    echo "Usuario no encontrado";
-                }
-
-                // Cerrar la conexión
-                $stmt->close();
+        // Verificar si se encontró el usuario
+        if ($result->num_rows == 1) {
+            // Obtener los datos del usuario
+            $row = $result->fetch_assoc();
+            // Verificar la contraseña
+            if (password_verify($contra, $row['contrasena'])) {
+                // Guardar información del usuario en la sesión
+                $_SESSION['correo'] = $row['correo_electronico'];
+                $_SESSION['user_id'] = $row['id'];
+                $_SESSION['user_nombre'] = $row['nombre'];
+                $_SESSION['user_apellido'] = $row['apellido'];
+                header("Location: ../view/articulos.php");
+                exit;
             } else {
-                // Todos los campos son obligatorios
-                echo "Todos los campos son obligatorios.";
+                // Contraseña incorrecta
+                return "La contraseña es incorrecta.";
             }
+        } else {
+            // Usuario no encontrado
+            return "Usuario no encontrado.";
         }
+
+        // Cerrar la conexión
+        $stmt->close();
     }
 
     public function iniciarSesionAdmin($correo, $contrasena)
