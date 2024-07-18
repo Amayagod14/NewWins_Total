@@ -2,7 +2,6 @@
 require_once '../model/conexion.php';
 require_once '../model/gestor_noticias.php';
 require_once '../model/gestor_usuarios.php';
-
 session_start();
 $userEmail = $_SESSION['correo'];
 $user = GestorUsuarios::getUserByEmail($userEmail);

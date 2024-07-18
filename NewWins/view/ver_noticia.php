@@ -1,5 +1,7 @@
 <?php
-session_start();
+
+include('header_user.php');
+
 // detalle_noticia.php
 require_once '../model/conexion.php';
 require_once '../model/gestor_noticias.php';
@@ -21,9 +23,7 @@ if (!$noticia) {
     exit();
 }
 ?>
-<?php
-include('header_user.php')
-?>
+
 <!DOCTYPE html>
 <html lang="es">
 

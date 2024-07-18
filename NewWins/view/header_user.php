@@ -112,7 +112,7 @@ $fechaActual = date("d/m/Y"); // Formato de fecha: día/mes/año
                             <i class='bx bxs-user'></i>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                            <li><a class="dropdown-item" href="perfil.php">Ver perfil</a></li>
+                            <li><a class="dropdown-item" href="perfil_user.php">Ver perfil</a></li>
                             <li><a id="cerrarSesionUser" class="dropdown-item" href="#">Cerrar sesión</a></li>
                         </ul>
                     </div>

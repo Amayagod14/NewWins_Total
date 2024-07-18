@@ -1,6 +1,6 @@
 <title>Seguridad</title>
 <?php
-session_start();
+
 include('header_user.php')
 ?>
 

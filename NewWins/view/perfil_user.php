@@ -1,5 +1,5 @@
 <?php
-session_start();
+
 include('header_user.php');
 require_once '../model/gestor_usuarios.php';
 $userEmail = $_SESSION['correo'];
