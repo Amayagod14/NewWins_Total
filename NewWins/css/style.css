@@ -77,3 +77,14 @@
        	    margin-left: 1rem;
        	    margin-right: 1rem;
        	}
+				 .tendencia-button {
+				 	display: inline-block;
+				 	padding: 10px 20px;
+				 	background-color: #c82333;
+				 	/* Color de fondo */
+				 	color: white;
+				 	/* Color del texto */
+				 	border-radius: 5px;
+				 	font-weight: bold;
+				 	text-transform: uppercase;
+				 }

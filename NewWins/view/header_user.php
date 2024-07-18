@@ -28,8 +28,11 @@ $fechaActual = date("d/m/Y"); // Formato de fecha: día/mes/año
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hover.css/2.3.1/css/hover-min.css">
     <link rel="stylesheet" href="../css/owlcarousel/assets/owl.carousel.min.css">
     <link rel="stylesheet" href="../css/style.css"> <!-- Agrega tu archivo CSS personalizado aquí -->
+    <link rel="stylesheet" href="../css/styless.css">
+    <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
 </head>
 
 <body>
@@ -98,7 +101,9 @@ $fechaActual = date("d/m/Y"); // Formato de fecha: día/mes/año
                 </ul>
 
                 <div class="col-md-8 d-flex align-items-center">
-                    <div class="bg-danger text-white text-center py-2 px-3 d-none d-lg-inline-block">Tendencia</div>
+                    <div class="bg-danger text-white text-center py-2 px-3 d-none d-lg-inline-block tendencia-button hvr-pulse-grow">
+                        Tendencia
+                    </div>
                     <form class="d-flex flex-grow-1" action="../controller/buscar_noticias.php" method="GET">
                         <input type="text" class="form-control me-2" name="q" placeholder="Buscar" required>
                         <button class="btn btn-outline-secondary" type="submit"><i class="fa fa-search"></i></button>
@@ -122,6 +127,8 @@ $fechaActual = date("d/m/Y"); // Formato de fecha: día/mes/año
     </nav>
     <!-- Navbar End -->
 
+    <!-- Scripts al final del body -->
+    
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -138,7 +145,6 @@ $fechaActual = date("d/m/Y"); // Formato de fecha: día/mes/año
             });
         });
     </script>
-
 </body>
 
 </html>

@@ -1,5 +1,4 @@
 <?php
-
 include('header_user.php');
 require_once '../model/gestor_usuarios.php';
 $userEmail = $_SESSION['correo'];
@@ -13,8 +12,15 @@ $user = GestorUsuarios::getUserByEmail($userEmail);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perfil</title>
+    <link rel="stylesheet" href="../css/styless.css">
+    
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="../js/alert.js"></script>
+    <!-- Asegúrate de cargar jQuery y Bootstrap JS aquí si es necesario -->
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+    
 </head>
 
 <body>
@@ -35,7 +41,7 @@ $user = GestorUsuarios::getUserByEmail($userEmail);
                             <img id="previewImage" class="img-thumbnail" src="#" alt="Vista previa">
                             <button type="button" class="btn btn-danger mt-2" onclick="cancelUpload()">Cancelar</button>
                         </div>
-                        <form id="formSubirImagen" action="../controller/upload_profile_user.php" method="POST" enctype="multipart/form-data">
+                        <form id="formSubirImagen" action="../controller/upload_profile.php" method="POST" enctype="multipart/form-data">
                             <label for="foto_perfil" class="btn btn-primary">
                                 <i class='bx bx-upload'></i> Seleccionar archivo
                             </label><br><br>
