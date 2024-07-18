@@ -9,7 +9,22 @@ session_start();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="https://unpkg.com/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <script src="https://cdn.tiny.cloud/1/fj76e7aualveq77f2n0uc7mcz6cdimvxob2lx0yl9o4rwkhp/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+        tinymce.init({
+            selector: 'textarea#contenido',
+            plugins: 'advlist autolink lists link image charmap print preview hr anchor pagebreak',
+            toolbar_mode: 'floating',
+            toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+            image_class_list: [
+                { title: 'None', value: '' },
+                { title: 'Responsive', value: 'img-fluid' }
+            ],
+            content_style: 'img { max-width: 100%; height: auto; }'
+        });
+    </script>
 </head>
 
 <body>
@@ -30,7 +45,8 @@ session_start();
                                 </div>
                                 <div class="form-group">
                                     <label for="contenido">Contenido:</label>
-                                    <textarea class="form-control" id="contenido" name="contenido" rows="3" required></textarea>
+                                    <textarea class="form-control" id="contenido" name="contenido" rows="10"></textarea>
+
                                 </div>
                                 <div class="form-group">
                                     <label for="url">URL:</label>

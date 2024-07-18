@@ -59,87 +59,85 @@ $fechaActual = date("d/m/Y"); // Formato de fecha: día/mes/año
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-            <ul class="navbar-nav mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link" href="articulos.php">Inicio</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Categorías
-                    </a>
-                    <?php
-                    // Incluir el archivo de conexión y creación de instancia de GestorContenido si no está incluido
-                    require_once('../model/conexion.php');
-                    require_once('../model/gestor_noticias.php');
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="articulos.php">Inicio</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Categorías
+                        </a>
+                        <?php
+                        // Incluir el archivo de conexión y creación de instancia de GestorContenido si no está incluido
+                        require_once('../model/conexion.php');
+                        require_once('../model/gestor_noticias.php');
 
-                    // Crear instancia del gestor de contenido
-                    $conexion = ConexionBD::obtenerConexion();
-                    $gestorContenido = new GestorContenido($conexion);
+                        // Crear instancia del gestor de contenido
+                        $conexion = ConexionBD::obtenerConexion();
+                        $gestorContenido = new GestorContenido($conexion);
 
-                    // Obtener las categorías
-                    $categorias = $gestorContenido->listarCategorias();
+                        // Obtener las categorías
+                        $categorias = $gestorContenido->listarCategorias();
 
-                    // Verificar si hay categorías disponibles
-                    if ($categorias->num_rows > 0) {
-                        echo '<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">';
-                        while ($categoria = $categorias->fetch_assoc()) {
-                            echo '<li><a class="dropdown-item" href="listar_categorias_user.php?categoria_id=' . $categoria['id'] . '">' . $categoria['nombre'] . '</a></li>';
+                        // Verificar si hay categorías disponibles
+                        if ($categorias->num_rows > 0) {
+                            echo '<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">';
+                            while ($categoria = $categorias->fetch_assoc()) {
+                                echo '<li><a class="dropdown-item" href="listar_categorias_user.php?categoria_id=' . $categoria['id'] . '">' . $categoria['nombre'] . '</a></li>';
+                            }
+                            echo '</ul>';
+                        } else {
+                            echo '<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink"><a class="dropdown-item">No hay categorías disponibles</a></div>';
                         }
-                        echo '</ul>';
-                    } else {
-                        echo '<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink"><a class="dropdown-item">No hay categorías disponibles</a></div>';
-                    }
-                    ?>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Envía tu noticia</a>
-                </li>
-            </ul>
+                        ?>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Envía tu noticia</a>
+                    </li>
+                </ul>
 
+                <div class="col-md-8 d-flex align-items-center">
+                    <div class="bg-danger text-white text-center py-2 px-3 d-none d-lg-inline-block">Tendencia</div>
+                    <form class="d-flex flex-grow-1" action="../controller/buscar_noticias.php" method="GET">
+                        <input type="text" class="form-control me-2" name="q" placeholder="Buscar" required>
+                        <button class="btn btn-outline-secondary" type="submit"><i class="fa fa-search"></i></button>
+                    </form>
 
-
-            <div class="col-md-8 d-flex align-items-center">
-                <div class="bg-danger text-white text-center py-2" style="width: 100px;">Tendencia</div>
-                <form class="input-group" action="../controller/buscar_noticias.php" method="GET" style="flex: 1; max-width: 500px;">
-                    <input type="text" class="form-control" name="q" placeholder="Buscar" required>
-                    <button class="input-group-text text-secondary" type="submit"><i class="fa fa-search"></i></button>
-                </form>
-
-                <div class="col-md-1 text-md">
-                    <?php echo $fechaActual; ?>
-                </div>
-                <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class='bx bxs-user'></i>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                        <li><a class="dropdown-item" href="perfil.php">Ver perfil</a></li>
-                        <li><a id="cerrarSesionUser" class="dropdown-item" href="#">Cerrar sesión</a></li>
-                    </ul>
+                    <div class="col-md-1 text-md ms-3">
+                        <?php echo $fechaActual; ?>
+                    </div>
+                    <div class="dropdown ms-3">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class='bx bxs-user'></i>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                            <li><a class="dropdown-item" href="perfil.php">Ver perfil</a></li>
+                            <li><a id="cerrarSesionUser" class="dropdown-item" href="#">Cerrar sesión</a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
         </div>
     </nav>
     <!-- Navbar End -->
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('cerrarSesionUser').addEventListener('click', function(e) {
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('cerrarSesionUser').addEventListener('click', function (e) {
                 e.preventDefault();
                 Swal.fire({
                     title: 'Cerrando sesión',
                     icon: 'info',
                     showConfirmButton: false,
                     timer: 1500 // Duración en milisegundos
-                }).then(function() {
+                }).then(function () {
                     window.location.href = '../controller/logout.php';
                 });
             });
         });
     </script>
-
 
 </body>
 
