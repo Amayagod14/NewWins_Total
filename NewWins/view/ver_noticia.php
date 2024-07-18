@@ -1,18 +1,20 @@
 <?php
+session_start();
 // detalle_noticia.php
 require_once '../model/conexion.php';
 require_once '../model/gestor_noticias.php';
-
-if (!isset($_GET['id'])) {
-    echo "ID de noticia no proporcionado.";
+require_once '../model/gestor_usuarios.php';
+if (!isset($_SESSION['correo'])) {
+    header("Location: admin.php");
     exit();
 }
-
+$articulo_id = $_GET['id'];
+$userEmail = $_SESSION['correo'];
 $idNoticia = intval($_GET['id']);
-
 $conexion = ConexionBD::obtenerConexion();
 $gestorContenido = new GestorContenido($conexion);
 $noticia = $gestorContenido->obtenerNoticiaPorId($idNoticia);
+$comentarios = $gestorContenido->obtenerComentariosPorArticuloId($articulo_id);
 
 if (!$noticia) {
     echo "Noticia no encontrada.";
@@ -39,7 +41,31 @@ include('header_user.php')
         <img src="<?php echo $noticia['url']; ?>" class="img-fluid mb-8" alt="<?php echo $noticia['titulo']; ?>">
         <p><?php echo $noticia['contenido']; ?></p> <!-- Ajusta el índice según tu base de datos -->
     </div>
-
+    <div class="container md-2">
+        <h3>Comentarios</h3>
+        <form action="../controller/enviar_comentario.php" method="POST">
+            <div class="mb-3">
+                <textarea class="form-control" name="texto" placeholder="Escribe tu comentario aquí..." required></textarea>
+            </div>
+            <input type="hidden" name="articulo_id" value="<?php echo $articulo_id; ?>">
+            <button type="submit" class="btn btn-primary">Enviar</button>
+        </form>
+    </div>
+    <div class="container md-2">
+        <!-- Mostrar comentarios -->
+        <h2>Comentarios</h2>
+        <?php if (!empty($comentarios)) : ?>
+            <?php foreach ($comentarios as $comentario) : ?>
+                <div>
+                    <strong><?php echo htmlspecialchars($comentario['usuario']); ?></strong>
+                    <span><?php echo htmlspecialchars($comentario['fecha_hora']); ?></span>
+                    <p><?php echo htmlspecialchars($comentario['texto']); ?></p>
+                </div>
+            <?php endforeach; ?>
+        <?php else : ?>
+            <p>No hay comentarios aún. ¡Sé el primero en comentar!</p>
+        <?php endif; ?>
+    </div>
     <?php
     include('footer_user.php')
     ?>
