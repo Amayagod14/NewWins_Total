@@ -179,7 +179,42 @@ class GestorContenido
 
         return $articulos;
     }
+    // Método para agregar un comentario
+    public function agregarComentario($usuario,
+        $texto,
+        $puntuacion,
+        $articulo_id
+    ) {
+        $sql = "INSERT INTO comentarios (usuario, texto, puntuacion, articulo_id) VALUES (?, ?, ?, ?)";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("ssii", $usuario, $texto,
+            $puntuacion,
+            $articulo_id
+        );
+        if (!$stmt->execute()) {
+            throw new Exception("Error al agregar comentario: " . $stmt->error);
+        }
+        $stmt->close();
+    }
+    public function obtenerComentariosPorArticuloId($articulo_id)
+    {
+        $sql = "SELECT usuario, fecha_hora, texto, puntuacion FROM comentarios WHERE articulo_id = ? ORDER BY fecha_hora DESC";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("i", $articulo_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-
+        $comentarios = [];
+        while ($row = $result->fetch_assoc()) {
+            $comentarios[] = $row;
+        }
+        $stmt->close();
+        return $comentarios;
+    }
 
 }
+
+
+
+
+
