@@ -19,7 +19,10 @@ $vistaNoticias = new VistaNoticias($gestorContenido);
 
 // Obtener la fecha actual
 $fechaActual = date("d/m/Y"); // Formato de fecha: día/mes/año
-
+//obtener nombre de categoria para el titulo//
+if ($categoria_id>0){
+$categoria_name = $gestorContenido->obtenerCategoriaPorId($categoria_id);
+}
 // Obtener artículos relacionados con la categoría seleccionada
 $articulos = [];
 if ($categoria_id > 0) {
@@ -121,7 +124,7 @@ if ($categoria_id > 0) {
                         <i class='bx bxs-user'></i>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                        <li><a class="dropdown-item" href="perfil.php">Ver perfil</a></li>
+                        <li><a class="dropdown-item" href="perfil_user.php">Ver perfil</a></li>
                         <li><a id="cerrarSesionUser" class="dropdown-item" href="#">Cerrar sesión</a></li>
                     </ul>
                 </div>
@@ -133,7 +136,7 @@ if ($categoria_id > 0) {
     <!-- Main Content Start -->
     <div class="container mt-4">
         <?php if ($categoria_id > 0 && !empty($articulos)) : ?>
-            <h2 class="mb-4">Artículos en la categoría: <?php echo htmlspecialchars($articulos[0]['categoria_nombre']); ?></h2>
+            <h2 class="mb-4">Artículos en la categoría: <?php echo htmlspecialchars($categoria_name['nombre']); ?></h2>
             <div class="row">
                 <?php foreach ($articulos as $articulo) : ?>
                     <?php $vistaNoticias->mostrarArticulo($articulo); ?>
