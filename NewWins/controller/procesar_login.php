@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($errorMensaje) {
             // Redirigir con el mensaje de error
-            header("Location: index.php?error=" . urlencode($errorMensaje));
+            header("Location: ../view/index.php?error=" . urlencode($errorMensaje));
             exit;
         }
     } else {
