@@ -1,37 +1,39 @@
 <?php
-include('../model/gestor_usuarios.php'); // Incluir la clase GestorUsuarios
+session_start();
+require_once '../model/conexion.php';
+require_once '../model/gestor_usuarios.php';
 
-// Verificar si se recibieron los datos del formulario
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Obtener los datos del formulario
-    $nombre = $_POST["nombre"];
-    $apellido = $_POST["apellido"];
-    $nombreUsuario = $_POST["nombre_user"];
-    $correo = $_POST["correo"];
-    $contrasena = $_POST["contrasena"];
-    $pais = $_POST["pais"];
+    if (isset($_POST["nombre"]) && isset($_POST["apellido"]) && isset($_POST["nombre_user"]) && isset($_POST["correo"]) && isset($_POST["contrasena"]) && isset($_POST["pais"])) {
+        $nombre = $_POST["nombre"];
+        $apellido = $_POST["apellido"];
+        $nombre_user = $_POST["nombre_user"];
+        $correo = $_POST["correo"];
+        $contrasena = $_POST["contrasena"];
+        $pais = $_POST["pais"];
 
-    // Instanciar la clase GestorUsuarios
-    $gestorUsuarios = new GestorUsuarios();
+        // Validar la contraseña
+        if (strlen($contrasena) < 8 || !preg_match("/[a-z]/", $contrasena) || !preg_match("/[A-Z]/", $contrasena) || !preg_match("/\d/", $contrasena) || !preg_match("/[@$!%*?&]/", $contrasena)) {
+            $response = array("status" => "error", "message" => "La contraseña debe tener al menos 8 caracteres, una letra mayúscula, una letra minúscula, un número y un símbolo.");
+            echo json_encode($response);
+            exit;
+        }
 
-    // Intentar registrar al usuario
-    $registroExitoso = $gestorUsuarios->registrarUsuario($nombre, $apellido, $nombreUsuario, $correo, $contrasena, $pais);
+        $conexion = ConexionBD::obtenerConexion();
+        $gestorUsuarios = new GestorUsuarios($conexion);
+        $resultado = $gestorUsuarios->registrarUsuario($nombre, $apellido, $nombre_user, $correo, $contrasena, $pais);
 
-    if ($registroExitoso) {
-        // Registro exitoso
-        $response = [
-            'status' => 'success',
-            'message' => 'Se ha registrado correctamente.'
-        ];
+        if ($resultado) {
+            $response = array("status" => "success", "message" => "Registro exitoso.");
+        } else {
+            $response = array("status" => "error", "message" => "Error en el registro.");
+        }
+        echo json_encode($response);
     } else {
-        // Error en el registro
-        $response = [
-            'status' => 'error',
-            'message' => 'Hubo un error en el registro. Por favor, inténtalo de nuevo.'
-        ];
+        $response = array("status" => "error", "message" => "Todos los campos son obligatorios.");
+        echo json_encode($response);
     }
-
-    // Devolver respuesta como JSON
-    header('Content-Type: application/json');
+} else {
+    $response = array("status" => "error", "message" => "Solicitud inválida.");
     echo json_encode($response);
 }
