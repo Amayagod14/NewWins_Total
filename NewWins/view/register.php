@@ -74,7 +74,7 @@
 
                                     <div class="mb-4">
                                         <div class="form-outline">
-                                            <input type="password" name="contrasena" id="contrasena" class="form-control" required />
+                                            <input type="password" name="contrasena" id="contrasena" class="form-control" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}" title="La contraseña debe tener al menos 8 caracteres, una letra mayúscula, una letra minúscula, un número y un símbolo." required />
                                             <label class="form-label" for="contrasena">Contraseña</label>
                                         </div>
                                     </div>
@@ -127,9 +127,8 @@
 
     <!-- Script para manejar la respuesta del registro -->
     <script src="https://unpkg.com/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
-    <script src="../js/alert.js"></script>
+    <script src="../js/alert1.js"></script>
     <script>
-        // Capturar el evento submit del formulario
         document.getElementById('registroForm').addEventListener('submit', function(event) {
             event.preventDefault(); // Evitar el envío automático del formulario
 
@@ -140,16 +139,17 @@
                 })
                 .then(response => response.json()) // Convertir respuesta a JSON
                 .then(data => {
+                    console.log(data); // Verificar los datos recibidos
                     if (data.status === 'success') {
                         // Mostrar alerta de éxito
-                        showSuccessAlert(data.message);
+                        mostrarAlertaExito(data.message); // Cambiado para usar la función correcta
                         // Redirigir después de 3 segundos
                         setTimeout(() => {
                             window.location.href = '../view/index.php';
                         }, 3000);
                     } else {
                         // Mostrar alerta de error
-                        showErrorAlert(data.message);
+                        mostrarAlertaError(data.message); // Cambiado para usar la función correcta
                         // Limpiar el mensaje después de 3 segundos
                         setTimeout(() => {
                             document.getElementById('mensaje').innerHTML = '';
