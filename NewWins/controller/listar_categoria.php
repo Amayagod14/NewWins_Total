@@ -1,7 +1,7 @@
 <?php
 
 function aa(){
-    $conexion = mysqli_connect("127.0.0.1","root","root", "NewWins");
+    $conexion = ConexionBD::obtenerConexion();
     $salida = "";
     $sql = "SELECT * FROM categorias";
     $result = $conexion->query($sql);

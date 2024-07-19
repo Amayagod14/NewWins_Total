@@ -23,6 +23,7 @@ $fechaActual = date("d/m/Y"); // Formato de fecha: día/mes/año
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="google-adsense-account" content="ca-pub-8262837766739470">
     <title>NEWWINS</title>
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
@@ -33,6 +34,8 @@ $fechaActual = date("d/m/Y"); // Formato de fecha: día/mes/año
     <link rel="stylesheet" href="../css/style.css"> <!-- Agrega tu archivo CSS personalizado aquí -->
     <link rel="stylesheet" href="../css/styless.css">
     <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8262837766739470"
+     crossorigin="anonymous"></script>
 </head>
 
 <body>

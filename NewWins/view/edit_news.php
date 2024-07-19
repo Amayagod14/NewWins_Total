@@ -16,6 +16,20 @@ include 'header.php';
     <title>Gestionar Artículos</title>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../js/alert.js"></script> <!-- Asegúrate de usar la ruta correcta -->
+        <script src="https://cdn.tiny.cloud/1/fj76e7aualveq77f2n0uc7mcz6cdimvxob2lx0yl9o4rwkhp/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+        tinymce.init({
+            selector: 'textarea#contenido',
+            plugins: 'advlist autolink lists link image charmap print preview hr anchor pagebreak',
+            toolbar_mode: 'floating',
+            toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+            image_class_list: [
+                { title: 'None', value: '' },
+                { title: 'Responsive', value: 'img-fluid' }
+            ],
+            content_style: 'img { max-width: 100%; height: auto; }'
+        });
+    </script>
 </head>
 <body>
 <div class="container-fluid">
@@ -48,7 +62,7 @@ include 'header.php';
                         </div>
                         <div class="mb-3">
                             <label for="contenido" class="form-label">Contenido</label>
-                            <textarea id="contenido" name="contenido" class="form-control" rows="5" required><?php echo htmlspecialchars($articulo['contenido']); ?></textarea>
+                            <textarea class="form-control" id="contenido" name="contenido" rows="10"><?php echo htmlspecialchars($articulo['contenido']); ?></textarea>
                         </div>
                         <div class="mb-3">
                             <label for="url" class="form-label">URL de la Imagen</label>

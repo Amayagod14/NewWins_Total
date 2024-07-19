@@ -21,7 +21,7 @@ class VistaNoticias
             $imagen = $noticia['url']; // Ajusta el índice según tu base de datos
 
             echo '<div class="col-md-4 mb-4">';
-            echo '  <a href="ver_noticia.php?id=' . $id . '">';
+            echo '  <a href="ver_noticia.php?id=' . $id . '" style=text-decoration:none>';
             echo '      <div class="card">';
             echo '          <img src="' . $imagen . '" class="card-img-top" alt="' . $titulo . '">';
             echo '          <div class="card-body">';

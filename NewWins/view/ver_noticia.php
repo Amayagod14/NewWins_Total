@@ -1,5 +1,4 @@
 <?php
-
 include('header_user.php');
 
 // detalle_noticia.php
@@ -29,49 +28,104 @@ if (!$noticia) {
 
 <head>
     <meta charset="utf-8">
+    <meta name="google-adsense-account" content="ca-pub-8262837766739470">
     <title><?php echo $noticia['titulo']; ?> - NEWWINS</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/style.css"> <!-- Agrega tu archivo CSS personalizado aquí -->
+
+    <!-- Incluye Day.js desde un CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.10.7/dayjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.10.7/plugin/relativeTime.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.10.7/locale/es.js"></script>
+    <script>
+        // Configura el plugin de tiempo relativo y el idioma español
+        dayjs.extend(window.dayjs_plugin_relativeTime);
+        dayjs.locale('es');
+    </script>
+
+    <!-- Incluye el script de Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8262837766739470"
+     crossorigin="anonymous"></script>
+
 </head>
 
 <body>
-
-    <div class="container mt-4">
-        <h1 class="mb-4"><?php echo $noticia['titulo']; ?></h1>
-        <img src="<?php echo $noticia['url']; ?>" class="img-fluid mb-8" alt="<?php echo $noticia['titulo']; ?>">
-        <p><?php echo $noticia['contenido']; ?></p> <!-- Ajusta el índice según tu base de datos -->
+<div class="container">
+    <div class="row mt-4">
+        <div class="col-12">
+            <h1 class="mb-4"><?php echo $noticia['titulo']; ?></h1>
+        </div>
     </div>
-    <div class="container md-2">
-        <h3>Comentarios</h3>
-        <form action="../controller/enviar_comentario.php" method="POST">
-            <div class="mb-3">
-                <textarea class="form-control" name="texto" placeholder="Escribe tu comentario aquí..." required></textarea>
+    <div class="row">
+        <div class="col-md-6">
+            <p><?php echo $noticia['contenido']; ?></p>
+        </div>
+        <div class="col-md-6">
+            <p>Anuncios</p>
+            <!-- Código de anuncio de Google AdSense -->
+            <div class="anuncio">
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8262837766739470"
+     crossorigin="anonymous"></script>
+<!-- anuncios_wins -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8262837766739470"
+     data-ad-slot="8899815966"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
             </div>
-            <input type="hidden" name="articulo_id" value="<?php echo $articulo_id; ?>">
-            <button type="submit" class="btn btn-primary">Enviar</button>
-        </form>
+        </div>
     </div>
-    <div class="container md-2">
-        <!-- Mostrar comentarios -->
-        <h2>Comentarios</h2>
-        <?php if (!empty($comentarios)) : ?>
-            <?php foreach ($comentarios as $comentario) : ?>
-                <div>
-                    <strong><?php echo htmlspecialchars($comentario['usuario']); ?></strong>
-                    <span><?php echo htmlspecialchars($comentario['fecha_hora']); ?></span>
-                    <p><?php echo htmlspecialchars($comentario['texto']); ?></p>
+    <div class="row mt-4">
+        <div class="col-12">
+            <h3>Comentarios</h3>
+            <form action="../controller/enviar_comentario.php" method="POST">
+                <div class="mb-3">
+                    <textarea class="form-control" name="texto" placeholder="Escribe tu comentario aquí..." required></textarea>
                 </div>
-            <?php endforeach; ?>
-        <?php else : ?>
-            <p>No hay comentarios aún. ¡Sé el primero en comentar!</p>
-        <?php endif; ?>
+                <input type="hidden" name="articulo_id" value="<?php echo $articulo_id; ?>">
+                <button type="submit" class="btn btn-primary">Enviar</button>
+            </form>
+        </div>
     </div>
-    <?php
-    include('footer_user.php')
-    ?>
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script src="https://unpkg.com/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../js/main.js"></script>
+    <div class="row mt-4">
+        <div class="col-12">
+            <h2>Comentarios</h2>
+            <?php if (!empty($comentarios)) : ?>
+                <?php foreach ($comentarios as $comentario) : ?>
+                    <div class="mb-3">
+                        <strong><?php echo htmlspecialchars($comentario['usuario']); ?></strong>
+                        <span class="fecha-comentario" data-fecha="<?php echo htmlspecialchars($comentario['fecha_hora']); ?>"></span>
+                        <p><?php echo htmlspecialchars($comentario['texto']); ?></p>
+                    </div>
+                <?php endforeach; ?>
+            <?php else : ?>
+                <p>No hay comentarios aún. ¡Sé el primero en comentar!</p>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const fechas = document.querySelectorAll('.fecha-comentario');
+        fechas.forEach(fecha => {
+            const fechaOriginal = fecha.getAttribute('data-fecha');
+            const fechaRelativa = dayjs(fechaOriginal).fromNow();
+            fecha.textContent = fechaRelativa;
+        });
+    });
+</script>
+
+<?php
+include('footer_user.php');
+?>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://unpkg.com/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../js/main.js"></script>
 </body>
 
 </html>
