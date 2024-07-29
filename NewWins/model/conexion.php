@@ -4,8 +4,8 @@ class ConexionBD {
     public static function obtenerConexion() {
         $servername = '127.0.0.1';
         $username = 'root';
-        $password = 'root';
-        $dbname = 'NewWins';
+        $password = '';
+        $dbname = 'newwins';
 
         $conn = new mysqli($servername, $username, $password, $dbname);
 

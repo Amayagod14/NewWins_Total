@@ -211,7 +211,55 @@ class GestorContenido
         $stmt->close();
         return $comentarios;
     }
+    public function enviarNoticia($usuario_id, $titulo, $contenido, $categoria_id) {
+        $sql = "INSERT INTO bandeja_entrada (usuario_id, titulo, contenido, categoria_id, fecha_envio) VALUES (?, ?, ?, ?, NOW())";
+        $stmt = $this->conn->prepare($sql);
 
+        if ($stmt === false) {
+            return false;
+        }
+
+        $stmt->bind_param("isss", $usuario_id, $titulo, $contenido, $categoria_id);
+        return $stmt->execute();
+    }
+    
+    public function publicarNoticia($id, $titulo, $contenido, $categoria_id) {
+        try {
+            $this->conn->beginTransaction();
+
+            // Insertar la noticia en la tabla de artículos
+            $sqlInsert = "INSERT INTO articulos (titulo, contenido, categoria_id) VALUES (:titulo, :contenido, :categoria_id)";
+            $stmtInsert = $this->conn->prepare($sqlInsert);
+            $stmtInsert->bindParam(':titulo', $titulo, PDO::PARAM_STR);
+            $stmtInsert->bindParam(':contenido', $contenido, PDO::PARAM_STR);
+            $stmtInsert->bindParam(':categoria_id', $categoria_id, PDO::PARAM_INT);
+            $stmtInsert->execute();
+
+            // Eliminar la noticia de la bandeja de entrada
+            $sqlDelete = "DELETE FROM bandeja_entrada WHERE id = :id";
+            $stmtDelete = $this->conn->prepare($sqlDelete);
+            $stmtDelete->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmtDelete->execute();
+
+            $this->conn->commit();
+            return true;
+        } catch (Exception $e) {
+            $this->conn->rollBack();
+            return false;
+        }
+    }
+    public function eliminarNoticiaBandeja($id) {
+        $sql = "DELETE FROM bandeja_entrada WHERE id = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param('i', $id);
+        return $stmt->execute();
+    }
+    public function listarNoticiasBandeja() {
+        $sql = "SELECT be.*, u.nombre_usuario FROM bandeja_entrada be JOIN usuarios_registrados u ON be.usuario_id = u.id ORDER BY fecha_envio DESC";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 
 
